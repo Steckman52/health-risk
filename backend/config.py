@@ -5,12 +5,11 @@ class Settings(BaseSettings):
     ENV: str = "dev"
     DEBUG: bool = True
 
-    # млька
-    ML_BASE_URL: str = "http://127.0.0.1:8001"
+    ML_HOST: str = "0.0.0.0"
+    ML_BASE_URL: str = f"http://{ML_HOST}:8001"
     ML_PREDICT_PATH: str = "/predict"
     ML_TIMEOUT_SECONDS: int = 5
 
-    # бдшка на постгресе
     DB_HOST: str = "127.0.0.1"
     DB_PORT: int = 5432
     DB_NAME: str = "healthrisk"

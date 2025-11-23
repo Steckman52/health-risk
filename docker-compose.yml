@@ -1,0 +1,64 @@
+services:
+  bot:
+    build:
+      context: ./bot/
+      dockerfile: ./Dockerfile
+    container_name: bot_healthrisk
+    env_file:
+      - ./bot/.env
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: healthrisk
+      DB_USER: postgres
+      DB_PASS: 1234
+      BACKEND_HOST: backend
+    restart: unless-stopped
+    depends_on:
+      - db
+      - backend
+      - ml_service
+
+  backend:
+    build:
+      context: ./backend/
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./backend/.env
+    container_name: backend_healthrisk
+    environment:
+      ML_HOST:  ml_service
+      DB_HOST:  db
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  ml_service:
+    build:
+      context: ./ml_service/
+      dockerfile: ./Dockerfile
+    container_name: ml_healthrisk
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  db:
+    image: postgres:18.1-alpine3.22
+    container_name: db_healthrisk
+    environment:
+      POSTGRES_PASSWORD: 1234
+      PGUSER: postgres
+      POSTGRES_DB: healthrisk
+    volumes:
+      - data_db:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", 'pg_isready', "-U", "postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  data_db:

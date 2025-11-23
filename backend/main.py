@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import logging
+from contextlib import asynccontextmanager
 from typing import Any, Dict, Optional, List
 
 import httpx
+import uvicorn
 from fastapi import FastAPI, APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from sqlalchemy import text as sql_text
@@ -13,7 +15,7 @@ from config import settings
 from app.db import Base, engine, get_db
 from app.models import PredictionLog
 
-app = FastAPI(title=getattr(settings, "APP_NAME", "Health Risk Backend"))
+
 router = APIRouter(prefix="/api/v1")
 log = logging.getLogger("uvicorn.error")
 
@@ -57,10 +59,16 @@ def _ml_endpoint(analysis_type: str) -> str:
     raise HTTPException(status_code=400, detail="unsupported analysis_type")
 
 # создает таблицу в бл чтоб история была
-@app.on_event("startup")
-async def on_startup() -> None:
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # --- Блок, выполняемый при ЗАПУСКЕ (Startup) ---
     Base.metadata.create_all(bind=engine)
     log.info("DB schema ensured. ML: heart=%s, diabetes=%s", ML_HEART_URL, ML_DIAB_URL)
+    print("Приложение запускается...")
+    yield
+    print("Приложение останавливается...")
+
+app = FastAPI(title=getattr(settings, "APP_NAME", "Health Risk Backend"), lifespan=lifespan)
 
 # проверяет что все живое запустилось и не упало, доступно ли бд, подлкючен ли мл
 @app.get("/health")
@@ -154,3 +162,7 @@ async def list_logs(
     return out
 
 app.include_router(router)
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000, log_level="info")

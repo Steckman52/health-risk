@@ -10,4 +10,7 @@
     <orderEntry type="jdk" jdkName="Python 3.13 (health-risk-project)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="PackageRequirementsSettings">
+    <option name="requirementsPath" value="C:\Users\user\Desktop\health-risk-project\ml_service\requirements.txt" />
+  </component>
 </module>

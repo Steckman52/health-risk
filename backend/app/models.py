@@ -1,7 +1,7 @@
 from __future__ import annotations
 from sqlalchemy import Column, Integer, String, Float, DateTime, text
 from sqlalchemy.types import JSON
-from .db import Base
+from app.db import Base
 
 class PredictionLog(Base):
     __tablename__ = "prediction_logs"

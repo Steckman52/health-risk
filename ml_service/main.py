@@ -1,10 +1,12 @@
 from __future__ import annotations
+from contextlib import asynccontextmanager
+import uvicorn
+
 from typing import Any, Dict, Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from .model_loader import Registry
+from app.model_loader import Registry
 
-app = FastAPI(title="Unified ML (heart + diabetes)")
 registry: Registry | None = None
 
 class PredictIn(BaseModel):
@@ -24,10 +26,17 @@ def bucket(p: float) -> str:
     if p < 0.66: return "medium"
     return "high"
 
-@app.on_event("startup")
-def _startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # --- Блок, выполняемый при ЗАПУСКЕ (Startup) ---
     global registry
     registry = Registry()
+    print("Приложение запускается...")
+    yield
+    print("Приложение останавливается...")
+
+app = FastAPI(title="Unified ML (heart + diabetes)", lifespan=lifespan)
+
 
 @app.get("/health")
 def health():
@@ -56,5 +65,4 @@ def predict(body: PredictIn):
     return PredictOut(analysis_type=analysis, model=used, risk=prob, risk_category=cat, recommendation=rec)
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("app.main:app", host="127.0.0.1", port=8001, reload=True)
+    uvicorn.run("main:app/app", host="127.0.0.1", port=8001, reload=True)

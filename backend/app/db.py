@@ -1,7 +1,7 @@
 from __future__ import annotations
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from ..config import settings
+from config import settings
 
 connect_args = {"check_same_thread": False} if str(settings.DATABASE_URL).startswith("sqlite") else {}
 
