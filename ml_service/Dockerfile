@@ -2,13 +2,14 @@ FROM python:3.13-slim
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    build-essential \
-    cmake && \
+        build-essential \
+        python3-dev \
+        cmake && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /ml
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 COPY . .
 

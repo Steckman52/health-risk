@@ -65,4 +65,4 @@ def predict(body: PredictIn):
     return PredictOut(analysis_type=analysis, model=used, risk=prob, risk_category=cat, recommendation=rec)
 
 if __name__ == "__main__":
-    uvicorn.run("main:app/app", host="127.0.0.1", port=8001, reload=True)
+    uvicorn.run("main:app", host="127.0.0.1", port=8001, reload=True)
