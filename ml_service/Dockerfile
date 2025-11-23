@@ -1,10 +1,14 @@
-FROM python:3.13.9-alpine3.22
+FROM python:3.13-slim
 
-COPY requirements.txt .
-
-RUN python -m pip install --upgrade pip && pip install -r requirements.txt
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /ml
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
