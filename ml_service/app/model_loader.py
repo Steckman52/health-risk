@@ -8,7 +8,7 @@ import joblib
 # схема признаков по типу анализов
 FEATURES: Dict[str, List[str]] = {
     "heart": [
-        "age","gender","height","weight","ap_hi","ap_lo",
+        "age","height","weight","ap_hi","ap_lo",
         "cholesterol","gluc","smoke","alco","active"
     ],
     "diabetes": [
