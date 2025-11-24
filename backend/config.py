@@ -5,14 +5,14 @@ class Settings(BaseSettings):
     ENV: str = "dev"
     DEBUG: bool = True
 
-    ML_HOST: str = "0.0.0.0"
+    ML_HOST: str = 'ml_service'
     ML_BASE_URL: str = f"http://{ML_HOST}:8001"
     ML_HEART_URL: str = ML_BASE_URL
     ML_DIAB_URL: str = ML_BASE_URL
     ML_PREDICT_PATH: str = "/predict"
     ML_TIMEOUT_SECONDS: int = 5
 
-    DB_HOST: str = "127.0.0.1"
+    DB_HOST: str = "db"
     DB_PORT: int = 5432
     DB_NAME: str = "healthrisk"
     DB_USER: str = "postgres"

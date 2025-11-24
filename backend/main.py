@@ -19,8 +19,8 @@ from app.models import PredictionLog
 router = APIRouter(prefix="/api/v1")
 log = logging.getLogger("uvicorn.error")
 
-ML_HEART_URL = getattr(settings, "ML_HEART_URL", "http://127.0.0.1:8001")
-ML_DIAB_URL  = getattr(settings, "ML_DIAB_URL",  "http://127.0.0.1:8001")
+ML_HEART_URL = getattr(settings, "ML_HEART_URL")
+ML_DIAB_URL  = getattr(settings, "ML_DIAB_URL")
 ML_PREDICT_PATH = getattr(settings, "ML_PREDICT_PATH", "/predict")
 ML_TIMEOUT_SECONDS = int(getattr(settings, "ML_TIMEOUT_SECONDS", 5))
 
