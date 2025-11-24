@@ -8,7 +8,7 @@ import joblib
 # схема признаков по типу анализов
 FEATURES: Dict[str, List[str]] = {
     "heart": [
-        "age","height","weight","ap_hi","ap_lo",
+        "age","gender","height","weight","ap_hi","ap_lo",
         "cholesterol","gluc","smoke","alco","active"
     ],
     "diabetes": [
@@ -37,12 +37,16 @@ def vectorize(analysis: str, features: Dict[str, object]) -> Tuple[pd.DataFrame,
     d = dict(zip(order, row))
 
     if analysis == "heart":
-        d["age"]=_clamp(d["age"],1,120)
+        d["age"] = _clamp(d["age"], 1, 45000)
+        if d["age"] < 150.0:
+            d["age"] = d["age"] * 365.0
+
         d["height"]=_clamp(d["height"],50,250)
         d["weight"]=_clamp(d["weight"],20,300)
         d["ap_hi"]=_clamp(d["ap_hi"],50,250)
         d["ap_lo"]=_clamp(d["ap_lo"],30,200)
         d["ap_lo"]=min(d["ap_lo"], d["ap_hi"]-1.0)
+        d["ap_diff"] = d["ap_hi"] - d["ap_lo"]
         for c in ("cholesterol","gluc"): d[c]=_clamp(round(d[c]),1,3)
         for b in ("smoke","alco","active"): d[b]=1.0 if d[b]>=0.5 else 0.0
 

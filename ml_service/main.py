@@ -28,7 +28,6 @@ def bucket(p: float) -> str:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # --- Блок, выполняемый при ЗАПУСКЕ (Startup) ---
     global registry
     registry = Registry()
     print("Приложение запускается...")

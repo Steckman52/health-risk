@@ -49,7 +49,7 @@ class PredictionLogOut(BaseModel):
     risk_category: str
     risk_category_ru: str
 
-#  утилита для нормального выбора мльки епта
+#  утилита для нормального выбора мльки
 def _ml_endpoint(analysis_type: str) -> str:
     at = analysis_type.lower().strip()
     if at == "heart":
@@ -58,10 +58,9 @@ def _ml_endpoint(analysis_type: str) -> str:
         return f"{ML_DIAB_URL}{ML_PREDICT_PATH}"
     raise HTTPException(status_code=400, detail="unsupported analysis_type")
 
-# создает таблицу в бля чтоб история была
+# создает таблицу в чтоб история была
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # --- Блок, выполняемый при ЗАПУСКЕ (Startup) ---
     Base.metadata.create_all(bind=engine)
     log.info("DB schema ensured. ML: heart=%s, diabetes=%s", ML_HEART_URL, ML_DIAB_URL)
     print("Приложение запускается...")
