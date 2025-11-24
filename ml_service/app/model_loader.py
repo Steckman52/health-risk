@@ -41,6 +41,7 @@ def vectorize(analysis: str, features: Dict[str, object]) -> Tuple[pd.DataFrame,
         if d["age"] < 150.0:
             d["age"] = d["age"] * 365.0
 
+        d["gender"] =_coerce(d["gender"],1,2)
         d["height"]=_clamp(d["height"],50,250)
         d["weight"]=_clamp(d["weight"],20,300)
         d["ap_hi"]=_clamp(d["ap_hi"],50,250)
