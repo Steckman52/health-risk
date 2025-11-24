@@ -8,7 +8,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /ml
-COPY requirements.txt .
+COPY ../requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY . .

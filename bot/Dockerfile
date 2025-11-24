@@ -6,7 +6,7 @@ RUN apt-get update && \
         python3-dev \
         cmake && \
     rm -rf /var/lib/apt/lists/*
-COPY requirements.txt .
+COPY ../requirements.txt .
 
 RUN python -m pip install --upgrade pip && pip install -r requirements.txt
 
