@@ -29,6 +29,7 @@ DIAB_FIELDS: List[Tuple[str, str]] = [
 ]
 HEART_FIELDS: List[Tuple[str, str]] = [
     ("age", "Возраст (лет)"),
+    ("Gender", "Пол (м (1) /ж (2))"),
     ("height", "Рост (см)"),
     ("weight", "Масса (кг)"),
     ("ap_hi", "Систолическое АД (ap_hi)"),
