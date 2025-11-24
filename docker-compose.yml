@@ -1,8 +1,8 @@
 services:
   bot:
     build:
-      context: ./bot/
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./bot/Dockerfile
     container_name: bot_healthrisk
     env_file:
       - ./bot/.env
@@ -18,11 +18,13 @@ services:
       - db
       - backend
       - ml_service
+    networks:
+      - bot_network
 
   backend:
     build:
-      context: ./backend/
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./backend/Dockerfile
     env_file:
       - ./backend/.env
     container_name: backend_healthrisk
@@ -32,15 +34,23 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+    ports:
+      - "8000:8000"
+    networks:
+      - bot_network
 
   ml_service:
     build:
-      context: ./ml_service/
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./ml_service/Dockerfile
     container_name: ml_healthrisk
     restart: unless-stopped
     depends_on:
       - db
+    ports:
+      - "8001:8001"
+    networks:
+      - bot_network
 
   db:
     image: postgres:18.1-alpine3.22
@@ -59,6 +69,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 3
+    networks:
+      - bot_network
 
 volumes:
   data_db:
+
+networks:
+  bot_network:
+    driver: bridge

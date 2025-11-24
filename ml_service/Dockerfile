@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.11-slim
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -8,11 +8,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /ml
-COPY ../requirements.txt .
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY ./ml_service .
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--log-level" , "info"]
 
 EXPOSE 8001

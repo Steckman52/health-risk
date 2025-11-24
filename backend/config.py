@@ -7,6 +7,8 @@ class Settings(BaseSettings):
 
     ML_HOST: str = "0.0.0.0"
     ML_BASE_URL: str = f"http://{ML_HOST}:8001"
+    ML_HEART_URL: str = ML_BASE_URL
+    ML_DIAB_URL: str = ML_BASE_URL
     ML_PREDICT_PATH: str = "/predict"
     ML_TIMEOUT_SECONDS: int = 5
 

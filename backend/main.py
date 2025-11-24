@@ -19,8 +19,8 @@ from app.models import PredictionLog
 router = APIRouter(prefix="/api/v1")
 log = logging.getLogger("uvicorn.error")
 
-ML_HEART_URL = getattr(settings, "ML_HEART_URL", None) or getattr(settings, "ML_BASE_URL", "http://127.0.0.1:8001")
-ML_DIAB_URL  = getattr(settings, "ML_DIAB_URL",  None) or getattr(settings, "ML_BASE_URL", "http://127.0.0.1:8001")
+ML_HEART_URL = getattr(settings, "ML_HEART_URL", "http://127.0.0.1:8001")
+ML_DIAB_URL  = getattr(settings, "ML_DIAB_URL",  "http://127.0.0.1:8001")
 ML_PREDICT_PATH = getattr(settings, "ML_PREDICT_PATH", "/predict")
 ML_TIMEOUT_SECONDS = int(getattr(settings, "ML_TIMEOUT_SECONDS", 5))
 
@@ -49,7 +49,7 @@ class PredictionLogOut(BaseModel):
     risk_category: str
     risk_category_ru: str
 
-#  утилита для нормального выбора мльки
+#  утилита для нормального выбора мльки епта
 def _ml_endpoint(analysis_type: str) -> str:
     at = analysis_type.lower().strip()
     if at == "heart":
@@ -58,7 +58,7 @@ def _ml_endpoint(analysis_type: str) -> str:
         return f"{ML_DIAB_URL}{ML_PREDICT_PATH}"
     raise HTTPException(status_code=400, detail="unsupported analysis_type")
 
-# создает таблицу в бл чтоб история была
+# создает таблицу в бля чтоб история была
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # --- Блок, выполняемый при ЗАПУСКЕ (Startup) ---
