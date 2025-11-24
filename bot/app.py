@@ -40,7 +40,11 @@ HEART_FIELDS: List[Tuple[str, str]] = [
     ("alco", "Алкоголь (0/1)"),
     ("active", "Физ. активность (0/1)"),
 ]
-
+def _to_gender2(s:str) -> int:
+    t = str(s).strip().lower()
+    if t in ("2","m","м","мужской","муж"):
+        return 2
+    return 1
 
 def kb_main():
     rkb = ReplyKeyboardBuilder()
@@ -129,6 +133,7 @@ async def _submit(message: Message, state: FSMContext):
     else:
         features = {
             "age": _to_float(answers.get("age", '0')),
+            "gender":_to_gender2(answers.get("Gender", '1')),
             "height": _to_float(answers.get("height", '0')),
             "weight": _to_float(answers.get("weight", '0')),
             "ap_hi": _to_float(answers.get("ap_hi", '0')),
@@ -250,6 +255,8 @@ async def process_input(message: Message, state: FSMContext):
             _ = _to_int01(value)
         elif key == "Gender":
             _ = _to_gender01(value)
+        elif key =="gender":
+            _ = _to_gender2(value)
     except Exception:
         await message.answer("Нужно число (запятая/точка допустимы). Повторите ввод:");
         return
